@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Oracle SaaS Partner Pulse</title>
+    <style>
+      :root {
+        --bg: #080b0e;
+        --surface: rgba(18, 23, 28, 0.82);
+        --surface-strong: rgba(27, 33, 39, 0.92);
+        --ink: #f2f5f7;
+        --muted: #aab2ba;
+        --line: rgba(255, 255, 255, 0.12);
+        --oracle: #ff372d;
+        --cyan: #14d8ff;
+        --amber: #ffc928;
+        --green: #24e08d;
+        --green-bg: rgba(36, 224, 141, 0.14);
+        --yellow: #ffc928;
+        --yellow-bg: rgba(255, 201, 40, 0.16);
+        --red: #ff463e;
+        --red-bg: rgba(255, 70, 62, 0.16);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background:
+          linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px) 0 0 / 38px 100%,
+          linear-gradient(115deg, rgba(20,216,255,.18), transparent 32%),
+          linear-gradient(245deg, rgba(255,55,45,.2), transparent 34%),
+          linear-gradient(180deg, #07090b 0%, #11161a 52%, #07090b 100%);
+        color: var(--ink);
+      }
+      .shell { display: grid; grid-template-columns: 72px 1fr; min-height: 100vh; }
+      nav { background: rgba(5, 7, 9, 0.88); border-right: 1px solid rgba(255,255,255,.1); padding: 18px 12px; display: grid; align-content: start; gap: 14px; backdrop-filter: blur(14px); }
+      .mark { width: 44px; height: 44px; border-radius: 8px; background: conic-gradient(from 220deg, #125dff, #19d6ff, #20d979, #ffd12b, #ff332b, #125dff); color: #fff; display: grid; place-items: center; font-weight: 900; box-shadow: 0 0 26px rgba(20,216,255,.28), inset 0 0 0 1px rgba(255,255,255,.22); }
+      nav a { width: 44px; height: 44px; border-radius: 8px; color: #aab2ba; display: grid; place-items: center; text-decoration: none; font-weight: 800; border: 1px solid transparent; }
+      nav a.active, nav a:hover { background: rgba(255,255,255,.08); border-color: rgba(20,216,255,.28); color: #fff; box-shadow: 0 0 20px rgba(20,216,255,.12); }
+      main { padding: 24px; min-width: 0; }
+      header { display: flex; justify-content: space-between; gap: 18px; align-items: start; margin-bottom: 16px; padding: 16px; border: 1px solid var(--line); border-radius: 8px; background: linear-gradient(90deg, rgba(255,255,255,.08), rgba(255,255,255,.035)); box-shadow: 0 24px 70px rgba(0,0,0,.32); backdrop-filter: blur(18px); }
+      .brand-lockup { display: grid; grid-template-columns: 300px minmax(0, 1fr); align-items: center; gap: 20px; min-width: 0; }
+      .brand-logo { width: 300px; max-width: 100%; aspect-ratio: 16 / 9; object-fit: cover; object-position: center; border-radius: 8px; box-shadow: 0 0 38px rgba(20,216,255,.2), 0 0 48px rgba(255,55,45,.14); }
+      h1 { margin: 0; font-size: 32px; line-height: 1.08; letter-spacing: 0; color: #fff; text-shadow: 0 0 24px rgba(255,55,45,.28); }
+      header p { margin: 8px 0 0; color: var(--muted); max-width: 760px; line-height: 1.45; }
+      .demo-chip { border: 1px solid rgba(255,255,255,.16); background: rgba(255,255,255,.06); border-radius: 8px; padding: 8px 10px; color: #d8dee5; font-size: 12px; font-weight: 800; white-space: nowrap; box-shadow: inset 0 0 0 1px rgba(255,255,255,.04); }
+      .filters, .cards, .grid, .top-panels { display: grid; gap: 12px; }
+      .filters { grid-template-columns: minmax(220px, 1.4fr) repeat(4, minmax(130px, 1fr)) 100px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px; margin-bottom: 14px; backdrop-filter: blur(14px); }
+      label span { display: block; color: #8fdff1; font-size: 11px; font-weight: 900; text-transform: uppercase; margin-bottom: 5px; }
+      input, select, button { font: inherit; }
+      input, select { width: 100%; height: 38px; border: 1px solid rgba(255,255,255,.14); border-radius: 7px; padding: 0 10px; background: rgba(5,8,10,.78); color: var(--ink); outline: none; }
+      input:focus, select:focus { border-color: rgba(20,216,255,.7); box-shadow: 0 0 0 3px rgba(20,216,255,.14); }
+      button { height: 38px; border: 1px solid rgba(255,255,255,.14); border-radius: 7px; background: rgba(255,255,255,.07); color: var(--ink); cursor: pointer; font-weight: 800; }
+      button:hover { border-color: rgba(20,216,255,.58); color: #fff; box-shadow: 0 0 18px rgba(20,216,255,.16); }
+      .cards { grid-template-columns: repeat(4, 1fr); margin-bottom: 14px; }
+      .card, .panel, aside { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 18px 50px rgba(0,0,0,.28); backdrop-filter: blur(16px); }
+      .card { padding: 16px; }
+      .card span { color: #8fdff1; font-size: 12px; text-transform: uppercase; font-weight: 900; }
+      .card strong { display: block; font-size: 34px; margin-top: 8px; line-height: 1; }
+      .card small { display: block; color: var(--muted); margin-top: 8px; }
+      .grid { grid-template-columns: minmax(0,1fr) 420px; align-items: start; }
+      .left { display: grid; gap: 12px; min-width: 0; }
+      .top-panels { grid-template-columns: .8fr 1.2fr; }
+      .panel { padding: 16px; }
+      .panel h2, aside h2, .section h3 { margin: 0; }
+      .panel h2 { font-size: 17px; }
+      .panel p { margin: 5px 0 0; color: var(--muted); font-size: 13px; }
+      .stack { display: flex; height: 18px; border-radius: 999px; overflow: hidden; margin-top: 18px; background: rgba(255,255,255,.08); box-shadow: inset 0 0 0 1px rgba(255,255,255,.06); }
+      .stack i { display: block; min-width: 3px; }
+      .green { background: linear-gradient(90deg, var(--green), #7cffb9); }
+      .yellow { background: linear-gradient(90deg, var(--yellow), #ffed83); }
+      .red { background: linear-gradient(90deg, var(--red), #ff8b60); }
+      .legend { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-top: 14px; }
+      .legend span { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); border-radius: 7px; padding: 9px; display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); font-weight: 800; }
+      .ranking { display: grid; gap: 8px; margin-top: 14px; }
+      .rank-row { height: auto; background: rgba(255,255,255,.045); display: grid; grid-template-columns: 28px 1fr auto; gap: 10px; align-items: center; text-align: left; padding: 10px; }
+      .rank-row.selected { background: rgba(255,55,45,.12); border-color: rgba(255,55,45,.5); box-shadow: 0 0 24px rgba(255,55,45,.12); }
+      .rank-row small { display: block; color: var(--muted); margin-top: 3px; }
+      .temp { display: inline-flex; align-items: center; gap: 6px; border-radius: 999px; padding: 6px 9px; font-size: 12px; font-weight: 900; white-space: nowrap; }
+      .temp::before { content: ""; width: 8px; height: 8px; border-radius: 99px; background: currentColor; }
+      .temp.green { background: var(--green-bg); color: var(--green); box-shadow: 0 0 18px rgba(36,224,141,.1); }
+      .temp.yellow { background: var(--yellow-bg); color: var(--yellow); box-shadow: 0 0 18px rgba(255,201,40,.1); }
+      .temp.red { background: var(--red-bg); color: var(--red); box-shadow: 0 0 18px rgba(255,70,62,.12); }
+      table { width: 100%; border-collapse: collapse; min-width: 960px; }
+      .table-wrap { overflow: auto; margin-top: 12px; }
+      th { text-align: left; color: #8fdff1; text-transform: uppercase; font-size: 11px; padding: 0 10px 10px; border-bottom: 1px solid var(--line); }
+      td { padding: 12px 10px; border-bottom: 1px solid var(--line); font-size: 13px; vertical-align: middle; }
+      tbody tr { cursor: pointer; }
+      tbody tr:hover, tbody tr.selected { background: rgba(255,55,45,.1); }
+      td small { color: var(--muted); display: block; margin-top: 3px; }
+      .chip { display: inline-flex; padding: 4px 7px; background: rgba(255,255,255,.07); border: 1px solid var(--line); border-radius: 7px; margin: 2px; font-size: 12px; font-weight: 800; color: #d7dde3; }
+      aside { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: auto; }
+      .detail-head, .section { padding: 16px; border-bottom: 1px solid var(--line); }
+      .detail-head { display: flex; justify-content: space-between; gap: 12px; }
+      .detail-head p { color: var(--muted); margin: 7px 0 0; }
+      .section-title { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; margin-bottom: 12px; }
+      .section-title span { color: #8fdff1; font-size: 11px; font-weight: 900; text-transform: uppercase; }
+      .score-row { display: grid; grid-template-columns: 120px 1fr; gap: 10px; align-items: center; margin-bottom: 10px; }
+      .score-row strong { font-size: 12px; display: block; }
+      .score-row span { color: #8a94a3; font-size: 11px; }
+      .bar { height: 8px; border-radius: 999px; background: rgba(255,255,255,.08); overflow: hidden; }
+      .bar i { display: block; height: 100%; background: linear-gradient(90deg, var(--cyan), var(--amber), var(--oracle)); box-shadow: 0 0 14px rgba(20,216,255,.22); }
+      .project { border: 1px solid var(--line); border-radius: 8px; padding: 12px; margin-bottom: 10px; }
+      .project-top { display: flex; justify-content: space-between; gap: 10px; }
+      .project-top small, .project-meta { color: var(--muted); }
+      .project-meta { display: flex; justify-content: space-between; font-size: 12px; margin-top: 7px; }
+      .rating-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+      .rating-item { border: 1px solid var(--line); border-radius: 8px; padding: 10px; background: #fff; }
+      .rating-item strong { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 12px; }
+      .rating-item p { margin: 6px 0 0; color: var(--muted); font-size: 12px; line-height: 1.35; }
+      .rating-pill { display: inline-flex; align-items: center; justify-content: center; min-width: 28px; height: 24px; border-radius: 999px; background: rgba(255,255,255,.08); color: var(--ink); font-size: 12px; font-weight: 900; }
+      .rating-pill.good { background: var(--green-bg); color: var(--green); }
+      .rating-pill.mid { background: var(--yellow-bg); color: var(--yellow); }
+      .rating-pill.low { background: var(--red-bg); color: var(--red); }
+      .rating-scale { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+      .rating-scale span { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08); border-radius: 7px; padding: 9px; color: var(--muted); font-size: 12px; font-weight: 800; }
+      .guideline-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+      .guideline-grid article, .rating-item { border: 1px solid var(--line); border-radius: 8px; padding: 10px; background: rgba(255,255,255,.045); }
+      .guideline-grid strong { display: block; font-size: 13px; }
+      .guideline-grid p { margin: 6px 0 0; color: var(--muted); font-size: 12px; line-height: 1.35; }
+      ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 7px; }
+      li { padding: 9px; border-radius: 7px; font-size: 12px; line-height: 1.35; }
+      .risk li { background: var(--red-bg); color: #68231f; }
+      .opp li { background: var(--green-bg); color: #0f5e3c; }
+      .notes p { margin: 0; padding: 10px; background: rgba(255,255,255,.06); border-radius: 7px; font-size: 13px; line-height: 1.4; }
+      @media (max-width: 1150px) { .grid, .top-panels { grid-template-columns: 1fr; } aside { position: static; max-height: none; } .filters { grid-template-columns: repeat(2,1fr); } .brand-lockup { grid-template-columns: 240px minmax(0, 1fr); } .brand-logo { width: 240px; } }
+      @media (max-width: 760px) { .shell { grid-template-columns: 1fr; } nav { display: flex; position: sticky; top: 0; z-index: 2; } main { padding: 14px; } header, .detail-head, .project-top, .project-meta { flex-direction: column; } .brand-lockup, .cards, .filters, .legend, .rating-grid, .rating-scale, .guideline-grid { grid-template-columns: 1fr; } .brand-logo { width: 100%; } }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script>
+      const partners = [
+        {
+          id: "nuvola",
+          name: "Nuvola",
+          region: "Peru",
+          specialty: "SaaS implementation",
+          products: ["HCM", "ERP Cloud", "CX Suite"],
+          status: "Needs attention",
+          owner: "CSM Peru",
+          lastActivity: "2026-02-13",
+          clients: ["ESAN"],
+          signals: { milestones: 45, projects: 45, relationship: 45, activity: 45, risks: 3, engagement: 45 },
+          ratings: { csm: 2, customer: 2, support: 2, scope: 2, competency: 2, methodology: 2, transition: 2 },
+          risks: ["Capability marked as NO in source table", "Low baseline rating across dimensions", "Evidence needs CSM follow-up"],
+          opportunities: ["Schedule partner rating review", "Define engagement recovery plan"],
+          projects: [
+            { name: "ESAN SaaS follow-up", client: "ESAN", product: "HCM / ERP / CX", status: "Watch", progress: 40, milestones: ["Confirm governance", "Validate open risks"] }
+          ],
+          note: "Loaded from Partner Rating source. Ratings captured as 2 across all guideline dimensions."
+        },
+        {
+          id: "evol",
+          name: "EVOL",
+          region: "Peru / Bolivia / Colombia",
+          specialty: "HCM and ERP delivery",
+          products: ["HCM", "ERP Cloud"],
+          status: "Watch",
+          owner: "CSM Peru",
+          lastActivity: "2026-02-13",
+          clients: ["MiBanco", "BCP Bolivia", "Mibanco ERP Peru", "Mibanco ERP Colombia"],
+          signals: { milestones: 62, projects: 58, relationship: 74, activity: 70, risks: 2, engagement: 76 },
+          ratings: { csm: 4, customer: 4, support: 3, scope: 2, competency: 2, methodology: 2, transition: 2 },
+          risks: ["Scope, competency, methodology and transition need improvement", "Multiple active customer contexts require closer cadence"],
+          opportunities: ["Use strong CSM and customer engagement to lift delivery practices", "Create shared action plan by customer"],
+          projects: [
+            { name: "MiBanco HCM", client: "MiBanco", product: "HCM", status: "Watch", progress: 58, milestones: ["Review adoption blockers", "Confirm support cadence"] },
+            { name: "BCP Bolivia ERP", client: "BCP Bolivia", product: "ERP Cloud", status: "Watch", progress: 54, milestones: ["Validate scope control", "Review methodology gaps"] },
+            { name: "Mibanco ERP Peru", client: "Mibanco ERP Peru", product: "ERP Cloud", status: "Watch", progress: 56, milestones: ["Confirm governance", "Track open issues"] },
+            { name: "Mibanco ERP Colombia", client: "Mibanco ERP Colombia", product: "ERP Cloud", status: "Watch", progress: 56, milestones: ["Confirm governance", "Track open issues"] }
+          ],
+          note: "Source table shows capability SI and mixed ratings: strong engagement, weaker delivery discipline dimensions."
+        },
+        {
+          id: "datco",
+          name: "DATCO",
+          region: "Peru",
+          specialty: "HCM delivery",
+          products: ["HCM"],
+          status: "Active",
+          owner: "CSM Peru",
+          lastActivity: "2026-02-13",
+          clients: ["Casa Andina", "Laureate"],
+          signals: { milestones: 72, projects: 70, relationship: 74, activity: 72, risks: 1, engagement: 78 },
+          ratings: { csm: 4, customer: 3, support: 3, scope: 3, competency: 3, methodology: 3, transition: 3 },
+          risks: ["Most dimensions are minimum/fair and can improve to successful"],
+          opportunities: ["Good CSM engagement can anchor improvement plan", "Standardize HCM delivery governance"],
+          projects: [
+            { name: "Casa Andina HCM", client: "Casa Andina", product: "HCM", status: "On track", progress: 68, milestones: ["Review governance evidence", "Confirm customer cadence"] },
+            { name: "Laureate HCM", client: "Laureate", product: "HCM", status: "On track", progress: 66, milestones: ["Validate support process", "Review transition readiness"] }
+          ],
+          note: "Source table shows capability SI and ratings mostly at 3, with CSM engagement at 4."
+        },
+        {
+          id: "neora",
+          name: "NEORA",
+          region: "Peru",
+          specialty: "ERP and localization",
+          products: ["ERP Cloud", "Localizacion"],
+          status: "Pending baseline",
+          owner: "CSM Peru",
+          lastActivity: "2026-02-13",
+          clients: ["Yobel", "Interbank"],
+          signals: { milestones: 60, projects: 58, relationship: 60, activity: 52, risks: 2, engagement: 58 },
+          ratings: { csm: 3, customer: 3, support: 3, scope: 3, competency: 3, methodology: 3, transition: 3 },
+          risks: ["Rating evidence pending in source table", "Baseline requires CSM validation"],
+          opportunities: ["Complete partner rating assessment", "Capture evidence for Yobel and Interbank"],
+          projects: [
+            { name: "Yobel ERP follow-up", client: "Yobel", product: "ERP Cloud", status: "Pending baseline", progress: 50, milestones: ["Collect rating evidence", "Confirm project status"] },
+            { name: "Interbank localization follow-up", client: "Interbank", product: "Localizacion", status: "Pending baseline", progress: 50, milestones: ["Collect rating evidence", "Confirm project status"] }
+          ],
+          note: "Partner loaded from source list. Ratings default to neutral pending evidence."
+        },
+        {
+          id: "novasys",
+          name: "Novasys",
+          region: "Peru",
+          specialty: "SaaS delivery",
+          products: ["SaaS"],
+          status: "Pending baseline",
+          owner: "CSM Peru",
+          lastActivity: "2026-02-13",
+          clients: ["Pacifico"],
+          signals: { milestones: 60, projects: 58, relationship: 60, activity: 52, risks: 2, engagement: 58 },
+          ratings: { csm: 3, customer: 3, support: 3, scope: 3, competency: 3, methodology: 3, transition: 3 },
+          risks: ["Rating evidence pending in source table"],
+          opportunities: ["Complete baseline rating with CSM notes", "Confirm active project scope"],
+          projects: [
+            { name: "Pacifico follow-up", client: "Pacifico", product: "SaaS", status: "Pending baseline", progress: 50, milestones: ["Collect rating evidence", "Confirm active scope"] }
+          ],
+          note: "Partner loaded from image and source page. Assessment pending."
+        },
+        {
+          id: "nubisk",
+          name: "Nubisk",
+          region: "Peru",
+          specialty: "HCM delivery",
+          products: ["HCM"],
+          status: "Pending baseline",
+          owner: "CSM Peru",
+          lastActivity: "2026-02-13",
+          clients: ["Laureate"],
+          signals: { milestones: 60, projects: 58, relationship: 60, activity: 52, risks: 2, engagement: 58 },
+          ratings: { csm: 3, customer: 3, support: 3, scope: 3, competency: 3, methodology: 3, transition: 3 },
+          risks: ["Rating evidence pending in source table"],
+          opportunities: ["Complete HCM partner rating baseline"],
+          projects: [
+            { name: "Laureate HCM follow-up", client: "Laureate", product: "HCM", status: "Pending baseline", progress: 50, milestones: ["Collect rating evidence", "Confirm governance"] }
+          ],
+          note: "Partner loaded from source list. Ratings default to neutral pending evidence."
+        },
+        {
+          id: "witbor",
+          name: "Witbor",
+          region: "Peru",
+          specialty: "SaaS delivery",
+          products: ["SaaS"],
+          status: "Pending baseline",
+          owner: "CSM Peru",
+          lastActivity: "2026-02-13",
+          clients: ["Credicorp"],
+          signals: { milestones: 60, projects: 58, relationship: 60, activity: 52, risks: 2, engagement: 58 },
+          ratings: { csm: 3, customer: 3, support: 3, scope: 3, competency: 3, methodology: 3, transition: 3 },
+          risks: ["Rating evidence pending in source table"],
+          opportunities: ["Complete baseline for Credicorp context"],
+          projects: [
+            { name: "Credicorp follow-up", client: "Credicorp", product: "SaaS", status: "Pending baseline", progress: 50, milestones: ["Collect rating evidence", "Confirm active services"] }
+          ],
+          note: "Partner loaded from source list. Ratings default to neutral pending evidence."
+        },
+        {
+          id: "deloitte",
+          name: "Deloitte",
+          region: "Peru",
+          specialty: "Enterprise SaaS delivery",
+          products: ["SaaS"],
+          status: "Watch",
+          owner: "CSM Peru",
+          lastActivity: "2026-02-13",
+          clients: ["Credicorp"],
+          signals: { milestones: 58, projects: 56, relationship: 52, activity: 62, risks: 2, engagement: 62 },
+          ratings: { csm: 3, customer: 2, support: 3, scope: 2, competency: 3, methodology: 3, transition: 3 },
+          risks: ["Customer engagement and scope management need attention", "Some source values were marked NA and need validation"],
+          opportunities: ["Clarify NA dimensions with CSM evidence", "Reinforce governance and scope discipline"],
+          projects: [
+            { name: "Credicorp follow-up", client: "Credicorp", product: "SaaS", status: "Watch", progress: 55, milestones: ["Validate NA dimensions", "Review governance"] }
+          ],
+          note: "Source table shows capability SI with customer and scope ratings at 2. NA values are treated as neutral until validated."
+        },
+        {
+          id: "ize",
+          name: "Ize",
+          region: "Peru",
+          specialty: "SaaS delivery",
+          products: ["SaaS"],
+          status: "Pending baseline",
+          owner: "CSM Peru",
+          lastActivity: "2026-02-13",
+          clients: ["To be confirmed"],
+          signals: { milestones: 55, projects: 55, relationship: 55, activity: 50, risks: 2, engagement: 55 },
+          ratings: { csm: 3, customer: 3, support: 3, scope: 3, competency: 3, methodology: 3, transition: 3 },
+          risks: ["No customer evidence captured yet", "Rating evidence pending in source table"],
+          opportunities: ["Confirm associated accounts", "Complete first partner rating"],
+          projects: [
+            { name: "Partner baseline", client: "To be confirmed", product: "SaaS", status: "Pending baseline", progress: 35, milestones: ["Confirm customers", "Collect evidence"] }
+          ],
+          note: "Partner loaded from image. Source page had no rating values captured."
+        },
+        {
+          id: "klug",
+          name: "Klug",
+          region: "Peru",
+          specialty: "SaaS delivery",
+          products: ["SaaS"],
+          status: "At risk",
+          owner: "CSM Peru",
+          lastActivity: "2026-02-13",
+          clients: ["PIM Proyecto Intercorp", "Cuida Digital"],
+          signals: { milestones: 48, projects: 45, relationship: 50, activity: 45, risks: 4, engagement: 35 },
+          ratings: { csm: 1, customer: 2, support: 2, scope: 2, competency: 3, methodology: 2, transition: 2 },
+          risks: ["Capability marked as No in source table", "Very low CSM engagement rating", "Multiple dimensions below minimum success level"],
+          opportunities: ["Immediate CSM alignment session", "Define minimum governance and escalation process"],
+          projects: [
+            { name: "PIM Proyecto Intercorp", client: "PIM Proyecto Intercorp", product: "SaaS", status: "At risk", progress: 42, milestones: ["Rebuild CSM engagement", "Validate governance"] },
+            { name: "Cuida Digital", client: "Cuida Digital", product: "SaaS", status: "At risk", progress: 42, milestones: ["Confirm scope", "Review delivery risks"] }
+          ],
+          note: "Source table shows low rating, especially Engagement with CSM at 1."
+        },
+        {
+          id: "apply",
+          name: "Apply",
+          region: "Peru",
+          specialty: "SaaS delivery",
+          products: ["SaaS"],
+          status: "Pending baseline",
+          owner: "CSM Peru",
+          lastActivity: "2026-02-13",
+          clients: ["To be confirmed"],
+          signals: { milestones: 55, projects: 55, relationship: 55, activity: 50, risks: 2, engagement: 55 },
+          ratings: { csm: 3, customer: 3, support: 3, scope: 3, competency: 3, methodology: 3, transition: 3 },
+          risks: ["No customer evidence captured yet", "Rating evidence pending in source table"],
+          opportunities: ["Confirm associated accounts", "Complete first partner rating"],
+          projects: [
+            { name: "Partner baseline", client: "To be confirmed", product: "SaaS", status: "Pending baseline", progress: 35, milestones: ["Confirm customers", "Collect evidence"] }
+          ],
+          note: "Partner loaded from image. Source page had no rating values captured."
+        }
+      ];
+
+      const weights = { milestones: .25, projects: .25, relationship: .2, activity: .1, riskScore: .1, engagement: .1 };
+      const ratingDimensions = [
+        { key: "csm", label: "Engagement with CSM", short: "CSM", guidance: "How proactively the partner works with CSM, follows escalation paths and uses Oracle resources correctly." },
+        { key: "customer", label: "Engagement with customer", short: "Customer", guidance: "Governance, status cadence, RACI, steering participation and transparent risk communication." },
+        { key: "support", label: "Engagement with support", short: "Support", guidance: "Support policy knowledge, SR prioritization, escalation discipline and collaboration with support engineers." },
+        { key: "scope", label: "Scope setting and management", short: "Scope", guidance: "Clear scope, controlled changes, realistic milestones and delivery discipline." },
+        { key: "competency", label: "Product, industry or domain competency", short: "Competency", guidance: "Trained resources, Oracle Cloud experience, domain knowledge, low churn and use of enablement channels." },
+        { key: "methodology", label: "Methodology", short: "Methodology", guidance: "Solution-driven implementation, low customization dependency, complete plan for testing, migration, adoption and operations." },
+        { key: "transition", label: "Transition to ownership and adoption", short: "Transition", guidance: "Post go-live support, knowledge transfer, customer ownership, sustainment plan and adoption tracking." }
+      ];
+      const state = { selected: "terra", filters: { q: "", region: "all", specialty: "all", product: "all", temp: "all" } };
+
+      const $ = (id) => document.getElementById(id);
+      const uniq = (items) => [...new Set(items)].sort();
+      const riskScore = (n) => n <= 0 ? 100 : n === 1 ? 80 : n === 2 ? 60 : n === 3 ? 40 : 20;
+      const score = (p) => Math.round(p.signals.milestones * weights.milestones + p.signals.projects * weights.projects + p.signals.relationship * weights.relationship + p.signals.activity * weights.activity + riskScore(p.signals.risks) * weights.riskScore + p.signals.engagement * weights.engagement);
+      const temp = (s) => s >= 75 ? "green" : s >= 50 ? "yellow" : "red";
+      const ratingAvg = (p) => Number((ratingDimensions.reduce((sum, dimension) => sum + p.ratings[dimension.key], 0) / ratingDimensions.length).toFixed(1));
+      const ratingClass = (value) => value >= 4 ? "good" : value >= 3 ? "mid" : "low";
+      const ratingLabel = (value) => value >= 4.5 ? "Excellent" : value >= 3.7 ? "Successful" : value >= 2.7 ? "Minimum" : value >= 1.7 ? "Ineffective" : "Poor";
+      const esc = (v) => String(v).replace(/[&<>"']/g, (m) => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;" }[m]));
+      const options = (values, selected, all) => `<option value="all">${all}</option>${values.map(v => `<option ${v === selected ? "selected" : ""}>${esc(v)}</option>`).join("")}`;
+
+      function enriched() {
+        return partners.map(p => ({ ...p, score: score(p), temp: temp(score(p)), riskScore: riskScore(p.signals.risks), ratingAvg: ratingAvg(p) }));
+      }
+      function filtered() {
+        return enriched().filter(p => {
+          const text = [p.name, p.region, p.specialty, p.status, ...p.products, ...p.clients].join(" ").toLowerCase();
+          return (!state.filters.q || text.includes(state.filters.q.toLowerCase()))
+            && (state.filters.region === "all" || p.region === state.filters.region)
+            && (state.filters.specialty === "all" || p.specialty === state.filters.specialty)
+            && (state.filters.product === "all" || p.products.includes(state.filters.product))
+            && (state.filters.temp === "all" || p.temp === state.filters.temp);
+        });
+      }
+      function tempBadge(p) {
+        const label = { green: "Verde", yellow: "Amarilla", red: "Roja" }[p.temp];
+        return `<span class="temp ${p.temp}">${label} ${p.score}</span>`;
+      }
+      function ratingBadge(value) {
+        return `<span class="rating-pill ${ratingClass(value)}">${value}</span>`;
+      }
+      function render() {
+        const data = enriched();
+        const rows = filtered();
+        const selected = data.find(p => p.id === state.selected) || rows[0] || data[0];
+        const sorted = [...rows].sort((a,b) => a.score - b.score);
+        const counts = { green: rows.filter(p => p.temp === "green").length, yellow: rows.filter(p => p.temp === "yellow").length, red: rows.filter(p => p.temp === "red").length };
+        const avg = rows.length ? Math.round(rows.reduce((s,p) => s + p.score, 0) / rows.length) : 0;
+        const avgRating = rows.length ? (rows.reduce((s,p) => s + p.ratingAvg, 0) / rows.length).toFixed(1) : "0.0";
+        const total = Math.max(rows.length, 1);
+        const regions = uniq(data.map(p => p.region));
+        const specialties = uniq(data.map(p => p.specialty));
+        const products = uniq(data.flatMap(p => p.products));
+
+        $("app").innerHTML = `
+          <div class="shell">
+            <nav>
+              <div class="mark">OP</div>
+              <a class="active" href="#" title="Dashboard">D</a>
+              <a href="#partners" title="Partners">P</a>
+              <a href="#scoring" title="Scoring">S</a>
+            </nav>
+            <main>
+              <header>
+                <div class="brand-lockup">
+                  <img class="brand-logo" src="./assets/oracle-partner-pulse-logo.png" alt="Oracle Partner Pulse logo" />
+                  <div>
+                  <h1>Oracle SaaS Partner Pulse</h1>
+                  <p>Observabilidad CSM para partners activos, proyectos, relacion con clientes, temperatura y senales operativas.</p>
+                  </div>
+                </div>
+                <span class="demo-chip">Demo hackathon · datos manuales</span>
+              </header>
+              <section class="filters">
+                <label><span>Buscar</span><input id="q" value="${esc(state.filters.q)}" placeholder="Partner, cliente, producto..." /></label>
+                <label><span>Region</span><select id="region">${options(regions, state.filters.region, "Todas")}</select></label>
+                <label><span>Especialidad</span><select id="specialty">${options(specialties, state.filters.specialty, "Todas")}</select></label>
+                <label><span>Producto</span><select id="product">${options(products, state.filters.product, "Todos")}</select></label>
+                <label><span>Temperatura</span><select id="temp"><option value="all">Todas</option><option value="green" ${state.filters.temp === "green" ? "selected" : ""}>Verde</option><option value="yellow" ${state.filters.temp === "yellow" ? "selected" : ""}>Amarilla</option><option value="red" ${state.filters.temp === "red" ? "selected" : ""}>Roja</option></select></label>
+                <button id="reset">Limpiar</button>
+              </section>
+              <section class="cards">
+                <div class="card"><span>Partners activos</span><strong>${rows.length}</strong><small>${rows.reduce((s,p) => s + p.projects.length, 0)} proyectos en seguimiento</small></div>
+                <div class="card"><span>Rating promedio</span><strong>${avgRating}</strong><small>Escala 1-5 segun guideline</small></div>
+                <div class="card"><span>Partners en riesgo</span><strong style="color:var(--red)">${counts.red}</strong><small>${rows.reduce((s,p) => s + p.signals.risks, 0)} riesgos abiertos</small></div>
+                <div class="card"><span>Clientes vinculados</span><strong>${uniq(rows.flatMap(p => p.clients)).length}</strong><small>Relaciones activas CSM</small></div>
+              </section>
+              <div class="grid">
+                <div class="left">
+                  <div class="top-panels">
+                    <section class="panel">
+                      <h2>Temperatura del equipo</h2>
+                      <p>Lectura consolidada para priorizar acompanamiento.</p>
+                      <div class="stack"><i class="green" style="width:${counts.green / total * 100}%"></i><i class="yellow" style="width:${counts.yellow / total * 100}%"></i><i class="red" style="width:${counts.red / total * 100}%"></i></div>
+                      <div class="legend"><span>Verde <b>${counts.green}</b></span><span>Amarilla <b>${counts.yellow}</b></span><span>Roja <b>${counts.red}</b></span></div>
+                    </section>
+                    <section class="panel">
+                      <h2>Prioridad CSM</h2>
+                      <p>Ordenado por temperatura y score.</p>
+                      <div class="ranking">${sorted.slice(0,5).map((p,i) => `<button class="rank-row ${p.id === selected.id ? "selected" : ""}" data-p="${p.id}"><b>${i+1}</b><span><strong>${esc(p.name)}</strong><small>${esc(p.region)} · ${esc(p.specialty)}</small></span>${tempBadge(p)}</button>`).join("")}</div>
+                    </section>
+                  </div>
+                  <section class="panel" id="partners">
+                    <h2>Partners activos</h2>
+                    <p>Filtro por region, especialidad, producto y temperatura.</p>
+                    <div class="table-wrap">
+                      <table>
+                        <thead><tr><th>Partner</th><th>Region</th><th>Especialidad</th><th>Productos</th><th>Clientes</th><th>Estado</th><th>Rating</th><th>Temp.</th></tr></thead>
+                        <tbody>${rows.map(p => `<tr class="${p.id === selected.id ? "selected" : ""}" data-p="${p.id}"><td><strong>${esc(p.name)}</strong><small>Owner CSM: ${esc(p.owner)}</small></td><td>${esc(p.region)}</td><td>${esc(p.specialty)}</td><td>${p.products.map(x => `<span class="chip">${esc(x)}</span>`).join("")}</td><td>${p.clients.map(esc).join("<br>")}</td><td>${esc(p.status)}</td><td>${ratingBadge(p.ratingAvg)}</td><td>${tempBadge(p)}</td></tr>`).join("")}</tbody>
+                      </table>
+                    </div>
+                  </section>
+                  <section class="panel" id="scoring">
+                    <h2>Partner Rating capability</h2>
+                    <p>Basado en el guideline: rating 1-5 por dimensiones de engagement, soporte, alcance, competencia, metodologia y transicion a adopcion.</p>
+                    <div class="rating-scale">
+                      <span>1 Poor / Failed</span>
+                      <span>2 Ineffective</span>
+                      <span>3 Minimum / Fair</span>
+                      <span>4 Successful</span>
+                      <span>5 Excellent</span>
+                    </div>
+                    <div class="guideline-grid">
+                      ${ratingDimensions.map(dimension => `<article><strong>${esc(dimension.label)}</strong><p>${esc(dimension.guidance)}</p></article>`).join("")}
+                    </div>
+                  </section>
+                </div>
+                <aside>
+                  <div class="detail-head">
+                    <div><h2>${esc(selected.name)}</h2><p>${esc(selected.region)} · ${esc(selected.specialty)}</p></div>
+                    ${tempBadge(selected)}
+                  </div>
+                  <div class="section">
+                    <div class="section-title"><h3>Score breakdown</h3><span>Factores ponderados</span></div>
+                    ${[
+                      ["Hitos", selected.signals.milestones, 25],
+                      ["Proyectos", selected.signals.projects, 25],
+                      ["Clientes", selected.signals.relationship, 20],
+                      ["Actividad", selected.signals.activity, 10],
+                      ["Riesgo", selected.riskScore, 10],
+                      ["Compromiso", selected.signals.engagement, 10],
+                    ].map(([label, value, weight]) => `<div class="score-row"><div><strong>${label}</strong><span>${weight}% · valor ${value}</span></div><div class="bar"><i style="width:${value}%"></i></div></div>`).join("")}
+                  </div>
+                  <div class="section">
+                    <div class="section-title"><h3>Partner Rating</h3><span>${ratingLabel(selected.ratingAvg)} · promedio ${selected.ratingAvg}</span></div>
+                    <div class="rating-grid">
+                      ${ratingDimensions.map(dimension => `<div class="rating-item"><strong>${esc(dimension.short)} ${ratingBadge(selected.ratings[dimension.key])}</strong><p>${esc(dimension.guidance)}</p></div>`).join("")}
+                    </div>
+                  </div>
+                  <div class="section">
+                    <div class="section-title"><h3>Active projects</h3><span>Avance e hitos</span></div>
+                    ${selected.projects.map(pr => `<div class="project"><div class="project-top"><div><strong>${esc(pr.name)}</strong><small>${esc(pr.client)} · ${esc(pr.product)}</small></div><b>${esc(pr.status)}</b></div><div class="bar" style="margin-top:10px"><i style="width:${pr.progress}%"></i></div><div class="project-meta"><span>${pr.progress}% avance</span><span>${pr.milestones.map(esc).join(" · ")}</span></div></div>`).join("")}
+                  </div>
+                  <div class="section">
+                    <div class="section-title"><h3>Senales de riesgo</h3><span>${selected.signals.risks} abiertas</span></div>
+                    <ul class="risk">${selected.risks.length ? selected.risks.map(r => `<li>${esc(r)}</li>`).join("") : "<li>Sin riesgos abiertos registrados.</li>"}</ul>
+                  </div>
+                  <div class="section">
+                    <div class="section-title"><h3>Oportunidades operativas</h3><span>Adopcion y enablement</span></div>
+                    <ul class="opp">${selected.opportunities.map(o => `<li>${esc(o)}</li>`).join("")}</ul>
+                  </div>
+                  <div class="section notes">
+                    <div class="section-title"><h3>Notas CSM</h3><span>Manual</span></div>
+                    <p>${esc(selected.note)}</p>
+                  </div>
+                </aside>
+              </div>
+            </main>
+          </div>
+        `;
+
+        ["q", "region", "specialty", "product", "temp"].forEach(id => {
+          $(id).addEventListener(id === "q" ? "input" : "change", (event) => {
+            state.filters[id] = event.target.value;
+            render();
+          });
+        });
+        $("reset").addEventListener("click", () => {
+          state.filters = { q: "", region: "all", specialty: "all", product: "all", temp: "all" };
+          render();
+        });
+        document.querySelectorAll("[data-p]").forEach(el => el.addEventListener("click", () => {
+          state.selected = el.dataset.p;
+          render();
+        }));
+      }
+      render();
+    </script>
+  </body>
+</html>
